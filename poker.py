@@ -1,25 +1,54 @@
 from treys import Card
 from treys import Evaluator
-
+import sys
 from treys import Deck
 
 #fall-back to libs
 
 
 # 'AS, 10C, 10H, 3D, 3S' T = 10
+hand = sys.argv[1]
+# print(hand)
+
+hand = hand.split(',')
+backList = []
+frontList = []
+finalList = []
+
+for each in hand:
+    # print(each)
+    card = each.split(' ')[-1]
+
+    front = (card[0])
+    back = (card[-1].lower())
+
+    frontList.append(front)
+    backList.append(back)
+
+
+l = list(map(lambda x: x.replace('1', 'T'), frontList))
+
+
+for front in l:
+    for back in backList:
+        finalList.append(front+back)
+
+
+finalList2 = []
+
+for x in finalList[::6]:
+    finalList2.append(x)
+
+
 
 evaluator = Evaluator()
 deck = Deck()
 board = deck.draw(5) #5 cards
+board = []
+for x in finalList2:
+    # print(x)
+    board.append(Card.new(x))
 
-
-board = [
-    Card.new('As'),
-    Card.new('Tc'),
-    Card.new('Th'),
-    Card.new('3d'),
-    Card.new('3s')
-]
 
 hand = [
     Card.new('Qs'),
