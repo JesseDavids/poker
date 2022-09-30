@@ -1,84 +1,32 @@
-#take in 5 cards, evaluate best hand from those cards. Will accept a string of '3A, 5S, KH, JS, 2D'
+from treys import Card
+from treys import Evaluator
 
-ogRank = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+from treys import Deck
 
-#diamon,heart,spade,clubs
-ogIdentifiers = ['D','H','S','C']
-
-
-cards = ['5A', '9S', '4H', '4S', '5D']
-
-#we will split the rank and look for duplicates (this will acount for the first 3 and high card)
-rankList = []
-
-duplicateList = []
-newList = []
-identifierList = [] 
+#fall-back to libs
 
 
+# 'AS, 10C, 10H, 3D, 3S' T = 10
+
+evaluator = Evaluator()
+deck = Deck()
+board = deck.draw(5) #5 cards
 
 
-def pairs(cards):
-    for card in cards:
-        rank = card[0:1]
-        identifier = card[1:2]
-        
-        rankList.append(rank)
-        identifierList.append(identifier)
+board = [
+    Card.new('As'),
+    Card.new('Tc'),
+    Card.new('Th'),
+    Card.new('3d'),
+    Card.new('3s')
+]
 
-        newlist = []
-        duplist = []
-        for i in rankList:
-            if i not in newlist:
-                newlist.append(i)
-            else:
-                duplist.append(i) # this method catches the first duplicate entries, and appends them to the list
+hand = [
+    Card.new('Qs'),
+    Card.new('5h')
+]
 
-    print(duplist)
-    if(len(duplist) == 1):
-        print('One Pair')
+p1_score = evaluator.evaluate(hand, board)
+p1_class = evaluator.get_rank_class(p1_score)
 
-    if (len(duplist) == 2):
-        print('Two Pair')
-
-    if(len(duplist) == 2):
-        print('Three of a Kind')
-
-
-
-
-def straight(cards, ogRank):
-    #sanitty checking..
-    for card in cards:
-        rank = card[0:1]
-        identifier = card[1:2]
-        
-        rankList.append(rank)
-        identifierList.append(identifier)
-
-        res = [x for x in rankList + ogRank if x not in rankList or x not in ogRank]
-
-    # print(res)
-    # if(len(res) <= 8):
-    #     print('Straight')
-    # print(res)
-
-
-        #this bit of code should identify a straight
-        #convert ranklist into int
-
-
-
-
-
-def flush(cards):
-    pass
-
-
-
-
-
-
-# straight(cards, ogRank)
-pairs(cards)
-
+print ("Player 1 hand rank = %d (%s)\n" % (p1_score, evaluator.class_to_string(p1_class)))
